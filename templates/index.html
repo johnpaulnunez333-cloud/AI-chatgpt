@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI ChatBot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <button class="new-chat-btn" onclick="clearChat()">
+                    <i class="fas fa-plus"></i>
+                    <span>New Chat</span>
+                </button>
+            </div>
+            <div class="sidebar-section-label">ML Insights</div>
+            <div class="insight-block">
+                <div class="insight-row">
+                    <span class="insight-icon" id="sentimentEmoji">😐</span>
+                    <div class="insight-info">
+                        <span class="insight-title">Sentiment</span>
+                        <span class="insight-value" id="sentimentLabel">Neutral</span>
+                    </div>
+                    <span class="insight-score" id="sentimentScore">0.50</span>
+                </div>
+            </div>
+            <div class="insight-block">
+                <div class="insight-row">
+                    <span class="insight-icon">🎯</span>
+                    <div class="insight-info">
+                        <span class="insight-title">Intent</span>
+                        <span class="insight-value" id="intentLabel">General</span>
+                    </div>
+                    <span class="insight-score" id="confidenceLabel">0%</span>
+                </div>
+            </div>
+            <div class="insight-block">
+                <div class="insight-row">
+                    <span class="insight-icon">🌐</span>
+                    <div class="insight-info">
+                        <span class="insight-title">Language</span>
+                        <span class="insight-value" id="languageLabel">English</span>
+                    </div>
+                </div>
+            </div>
+            <div class="insight-block">
+                <div class="insight-row">
+                    <span class="insight-icon">💬</span>
+                    <div class="insight-info">
+                        <span class="insight-title">Messages</span>
+                        <span class="insight-value" id="messageCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-section-label">Topics</div>
+            <div class="topics-wrap" id="topicsWrap">
+                <span class="topic-chip">None yet</span>
+            </div>
+            <div class="sidebar-section-label">Interests</div>
+            <div class="interests-wrap" id="interestsWrap">
+                <em class="empty-note">Start chatting...</em>
+            </div>
+            <div class="sidebar-bottom">
+                <button class="sidebar-action" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="sidebar-action" onclick="showInsights()">
+                    <i class="fas fa-chart-bar"></i> Full Insights
+                </button>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="topbar">
+                <button class="icon-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="topbar-title">
+                    <i class="fas fa-robot"></i>
+                    <span>AI ChatBot</span>
+                    <span class="topbar-sub">Pure Python ML + Gemini Backup</span>
+                </div>
+                <div class="topbar-right">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+
+            <div class="chat-area" id="chatArea">
+                <div class="welcome">
+                    <div class="welcome-icon"><i class="fas fa-brain"></i></div>
+                    <h1>How can I help you?</h1>
+                    <p>Powered by pure Python Machine Learning — works online and offline.</p>
+                    <div class="welcome-chips">
+                        <div class="welcome-chip" onclick="sendQuick('What is machine learning?')">What is machine learning?</div>
+                        <div class="welcome-chip" onclick="sendQuick('Calculate square root of 144')">Calculate square root of 144</div>
+                        <div class="welcome-chip" onclick="sendQuick('What is Python?')">What is Python?</div>
+                        <div class="welcome-chip" onclick="sendQuick('Tell me a fun fact')">Tell me a fun fact</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="suggestions-bar" id="suggestionsBar" style="display:none;">
+                <div class="suggestions-inner" id="suggestionsInner"></div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-box">
+                    <textarea
+                        id="userInput"
+                        placeholder="Message AI ChatBot..."
+                        rows="1"
+                        onkeypress="handleKey(event)"
+                        oninput="autoResize(this)"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                </div>
+                <div class="input-note">AI can make mistakes. Verify important information.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <span><i class="fas fa-chart-pie"></i> Full ML Insights</span>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
